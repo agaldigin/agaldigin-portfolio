@@ -38,9 +38,9 @@ class RouteTest extends TestCase
             }
 
             $projects = [
-                'ansor-kaltim' => 'projects/ansor-kaltim/thumbnail.png',
-                'bappeda-kaltim' => 'projects/bappeda-kaltim/thumbnail.png',
-                'koetai-mahkota-soundline' => 'projects/koetai-mahkota-soundline/thumbnail.png',
+                'ansor-kaltim' => 'projects/ansor-kaltim/thumbnail.jpg',
+                'bappeda-kaltim' => 'projects/bappeda-kaltim/thumbnail.jpg',
+                'koetai-mahkota-soundline' => 'projects/koetai-mahkota-soundline/thumbnail.jpg',
             ];
 
             foreach ($projects as $slug => $image) {
@@ -105,6 +105,7 @@ class RouteTest extends TestCase
         $response->assertStatus(302);
         $response->assertRedirect('/id');
     }
+
     public function testLanguageKeysAreIdenticalBetweenLocales(): void
     {
         $id = require base_path('lang/id/site.php');
@@ -133,6 +134,34 @@ class RouteTest extends TestCase
             $response = $this->get($path);
             $response->assertStatus(200);
             $response->assertDontSee('TODO(owner)');
+        }
+    }
+
+    public function testAllProjectImagesExist(): void
+    {
+        foreach ($this->locales as $locale) {
+            $projects = require base_path("resources/content/{$locale}/projects.php");
+
+            foreach ($projects as $slug => $project) {
+                $thumbnail = $project['thumbnail'] ?? '';
+                if (!empty($thumbnail)) {
+                    $this->assertFileExists(
+                        public_path($thumbnail),
+                        "Thumbnail tidak ada: {$thumbnail}"
+                    );
+                }
+
+                foreach (($project['screenshots'] ?? []) as $screenshot) {
+                    if (empty($screenshot)) {
+                        continue;
+                    }
+                    $path = public_path("projects/{$slug}/{$screenshot}");
+                    $this->assertFileExists(
+                        $path,
+                        "Screenshot tidak ada: projects/{$slug}/{$screenshot}"
+                    );
+                }
+            }
         }
     }
 
