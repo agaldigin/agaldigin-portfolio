@@ -4,8 +4,19 @@
 $category = $project['categories'][0] ?? 'fullstack';
 $technologies = array_values(array_filter((array) ($project['technologies'] ?? []), fn ($t) => $t !== '' && $t !== 'TODO(owner)'));
 $techData = implode(',', $technologies);
-$thumbnailPath = public_path($project['thumbnail'] ?? '');
-$hasThumbnail = !empty($project['thumbnail']) && $thumbnailPath && file_exists($thumbnailPath);
+$thumbnailCandidates = [
+    str_replace('.png', '.jpg', $project['thumbnail'] ?? ''),
+    $project['thumbnail'] ?? '',
+    str_replace('.jpg', '.png', $project['thumbnail'] ?? ''),
+];
+$thumbnailPath = '';
+foreach ($thumbnailCandidates as $candidate) {
+    if (!empty($candidate) && file_exists(public_path($candidate))) {
+        $thumbnailPath = $candidate;
+        break;
+    }
+}
+$hasThumbnail = !empty($thumbnailPath);
 ?>
 
 <article class="card overflow-hidden flex flex-col h-full"
@@ -15,7 +26,7 @@ $hasThumbnail = !empty($project['thumbnail']) && $thumbnailPath && file_exists($
     {{-- Thumbnail --}}
     <div class="aspect-video relative overflow-hidden bg-muted/20">
         @if($hasThumbnail)
-            <img src="{{ asset($project['thumbnail']) }}"
+            <img src="{{ asset($thumbnailPath) }}"
                  alt="{{ $project['title'] }}"
                  class="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                  loading="lazy"
