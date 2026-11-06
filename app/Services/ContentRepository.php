@@ -21,6 +21,33 @@ class ContentRepository
         $this->contentPath = resource_path("content/{$this->locale}");
         return $this;
     }
+    /**
+     * Hapus nilai/field bernilai 'TODO(owner)' dan field kosong secara rekursif
+     * sebelum konten dirender ke UI.
+     *
+     * @param  mixed  $value
+     * @return mixed
+     */
+    public function sanitize($value)
+    {
+        if (is_array($value)) {
+            $result = [];
+            foreach ($value as $key => $item) {
+                $item = $this->sanitize($item);
+                if ($item === '') {
+                    continue;
+                }
+                if (is_string($item) && str_contains($item, 'TODO(owner)')) {
+                    continue;
+                }
+                $result[$key] = $item;
+            }
+
+            return $result;
+        }
+
+        return $value;
+    }
 
     public function get(string $file): array
     {
@@ -30,7 +57,7 @@ class ContentRepository
             return [];
         }
 
-        return require $path;
+        return $this->sanitize(require $path);
     }
 
     public function getProject(string $slug): ?array

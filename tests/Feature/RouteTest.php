@@ -105,6 +105,36 @@ class RouteTest extends TestCase
         $response->assertStatus(302);
         $response->assertRedirect('/id');
     }
+    public function testLanguageKeysAreIdenticalBetweenLocales(): void
+    {
+        $id = require base_path('lang/id/site.php');
+        $en = require base_path('lang/en/site.php');
+        $this->assertSame(array_keys($id), array_keys($en), 'lang/site.php kunci tidak sama antara id dan en');
+
+        $idContent = require base_path('resources/content/id/projects.php');
+        $enContent = require base_path('resources/content/en/projects.php');
+        $this->assertSame(array_keys($idContent), array_keys($enContent), 'projects.php slug tidak sama antara id dan en');
+
+        foreach ($idContent as $slug => $project) {
+            $this->assertSame(array_keys($project), array_keys($enContent[$slug]), "projects.php[$slug] kunci tidak sama antara id dan en");
+        }
+    }
+
+    public function testAllPagesAreFreeOfTODO(): void
+    {
+        $paths = array_merge(
+            ['/id', '/en'],
+            array_map(fn ($s) => "/id/work/$s", $this->projectSlugs),
+            array_map(fn ($s) => "/en/work/$s", $this->projectSlugs),
+            ['/id/about', '/en/about', '/id/contact', '/en/contact', '/id/work', '/en/work']
+        );
+
+        foreach ($paths as $path) {
+            $response = $this->get($path);
+            $response->assertStatus(200);
+            $response->assertDontSee('TODO(owner)');
+        }
+    }
 
     public function testRootRedirectsToDefaultLocale(): void
     {
