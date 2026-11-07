@@ -86,7 +86,6 @@
             </div>
         </div>
 
-        <hr class="divider">
 
         {{-- Problem --}}
         <article class="mb-12" aria-labelledby="problem-heading">
@@ -188,7 +187,6 @@
         {{-- Next Project --}}
         @if(!empty($project['next_project_slug']) && isset($allProjects[$project['next_project_slug']]))
             @php $nextProject = $allProjects[$project['next_project_slug']]; @endphp
-            <hr class="divider">
             <div class="card p-6">
                 <h3 class="text-lg font-semibold mb-2">{{ __('project.next_project') }}</h3>
                 <a href="{{ route('work.show', ['locale' => app()->getLocale(), 'slug' => $nextProject['slug']]) }}"

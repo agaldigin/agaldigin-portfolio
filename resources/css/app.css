@@ -22,8 +22,12 @@
   --color-accent: #0F766E;
   --color-accent-hover: #115E59;
 
-  --radius-card: 12px;
+  --radius-card: 20px;
   --radius-pill: 999px;
+
+  --shadow-sm: 0 1px 2px rgba(16,24,40,.06);
+  --shadow-md: 0 2px 4px rgba(16,24,40,.05), 0 12px 28px rgba(16,24,40,.08);
+  --shadow-lg: 0 4px 8px rgba(16,24,40,.06), 0 24px 48px rgba(16,24,40,.12);
 
   --container-max: 1120px;
 
@@ -42,6 +46,10 @@
   --color-muted: #8A9490;
   --color-accent: #2DD4BF;
   --color-accent-hover: #14B8A6;
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.5);
+  --shadow-md: 0 2px 4px rgba(0,0,0,.4), 0 14px 32px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.04);
+  --shadow-lg: 0 6px 12px rgba(0,0,0,.45), 0 28px 56px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.05);
 }
 
 * {
@@ -93,9 +101,9 @@ body {
   top: 1rem;
 }
 
-:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
+::focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 45%, transparent);
+  outline: none;
 }
 
 .container {
@@ -118,18 +126,17 @@ body {
 
 .card {
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-md);
   border-radius: var(--radius-card);
-  transition: border-color var(--animate-duration-normal), box-shadow var(--animate-duration-normal);
+  transition: box-shadow var(--animate-duration-normal), transform var(--animate-duration-normal);
 }
 
 .card:hover {
-  border-color: var(--color-accent);
-  box-shadow: 0 4px 20px -4px rgba(15, 118, 110, 0.15);
+  box-shadow: var(--shadow-lg);
 }
 
 .dark .card:hover {
-  box-shadow: 0 4px 20px -4px rgba(45, 212, 191, 0.15);
+  box-shadow: var(--shadow-lg);
 }
 
 .btn {
@@ -143,7 +150,6 @@ body {
   border-radius: var(--radius-pill);
   transition: all var(--animate-duration-fast);
   cursor: pointer;
-  border: 1px solid transparent;
   text-decoration: none;
 }
 
@@ -157,13 +163,13 @@ body {
 }
 
 .btn-secondary {
-  background: transparent;
+  background: var(--color-surface);
   color: var(--color-text);
-  border-color: var(--color-border);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-secondary:hover {
-  border-color: var(--color-accent);
+  box-shadow: var(--shadow-md);
   color: var(--color-accent);
 }
 
@@ -174,8 +180,8 @@ body {
   font-size: 0.75rem;
   font-weight: 500;
   border-radius: var(--radius-pill);
-  background: var(--color-border);
-  color: var(--color-muted);
+  background: rgba(15, 118, 110, 0.1);
+  color: var(--color-accent);
 }
 
 .badge-accent {
@@ -232,10 +238,4 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-}
-
-.divider {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--color-border), transparent);
-  margin: 2rem 0;
 }

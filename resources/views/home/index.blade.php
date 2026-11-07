@@ -119,10 +119,10 @@
 
         <div class="max-w-2xl mx-auto">
             <ol class="relative">
-                <li class="absolute inset-0 w-0.5 bg-border left-4 md:left-8 -translate-x-1/2" aria-hidden="true"></li>
+                <li class="absolute inset-0 w-0.5 bg-accent left-4 md:left-8 -translate-x-1/2" aria-hidden="true"></li>
                 @foreach($journey['items'] as $index => $item)
                     <li class="relative pl-12 md:pl-20 pb-10">
-                        <div class="absolute left-4 md:left-8 top-1 -translate-x-1/2 w-3 h-3 bg-accent rounded-full border-4 border-bg z-10" aria-hidden="true"></div>
+                        <div class="absolute left-4 md:left-8 top-1 -translate-x-1/2 w-3 h-3 bg-accent rounded-full z-10" aria-hidden="true"></div>
                         <time class="text-sm font-mono text-muted">{{ $item }}</time>
                     </li>
                 @endforeach

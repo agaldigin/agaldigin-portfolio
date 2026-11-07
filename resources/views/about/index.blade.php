@@ -71,8 +71,8 @@
                 <h2 class="text-xl font-semibold mb-6">{{ $timeline['title'] }}</h2>
                 <ol class="space-y-6">
                     @foreach($timeline['items'] as $item)
-                        <li class="relative pl-6 border-l-2 border-border">
-                            <div class="absolute left-0 top-0.5 -translate-x-1/2 w-3 h-3 bg-accent rounded-full border-2 border-bg" aria-hidden="true"></div>
+                        <li class="relative pl-6">
+                            <div class="absolute left-0 top-0.5 -translate-x-1/2 w-3 h-3 bg-accent rounded-full" aria-hidden="true"></div>
                             @if(isset($item['month']))
                                 <time class="text-sm font-mono text-muted">{{ $item['month'] }} {{ $item['year'] }}</time>
                             @else

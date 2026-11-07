@@ -59,7 +59,7 @@ $hasThumbnail = !empty($thumbnailPath);
                 @endforeach
             </div>
 
-            <div class="flex items-center gap-4 text-sm text-muted border-t border-border pt-4 mt-auto">
+            <div class="flex items-center gap-4 text-sm text-muted py-4 mt-auto">
                 <time>{{ $project['year'] }}</time>
                 <span class="text-muted">{{ __('project.role') }}</span>
                 <span class="text-text">{{ $project['role'] ?? __('project.no_role') }}</span>

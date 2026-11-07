@@ -67,7 +67,7 @@
 <body class="min-h-full flex flex-col antialiased">
     <a href="#main" class="skip-link">{{ __('site.skip_content') }}</a>
 
-    <header class="border-b border-border sticky top-0 z-50 bg-bg/80 backdrop-blur-sm">
+    <header class="sticky top-0 z-50 bg-bg/80 backdrop-blur-sm sm:shadow-sm" x-data="{ scrolled: false }" @window.scroll.passive="scrolled = window.scrollY > 0" :class="scrolled ? 'shadow-md' : ''">
         <div class="container">
             <div class="flex h-16 items-center justify-between gap-4">
                 <a href="{{ route('home', ['locale' => app()->getLocale()]) }}" class="font-semibold text-lg shrink-0" aria-label="{{ __('site.name') }}">
@@ -81,7 +81,7 @@
                 </nav>
 
                 <div class="flex items-center gap-3 shrink-0">
-                    <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-surface border border-border rounded-lg" x-data="clock" x-init="update()">
+                    <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-surface rounded-xl" x-data="clock" x-init="update()">
                         <span class="text-sm text-muted">{{ __('status.location') }}</span>
                         <span class="text-muted">·</span>
                         <span class="text-sm font-mono tabular-nums text-text" aria-live="polite" x-text="time"></span> WITA
@@ -93,7 +93,7 @@
                         <a href="{{ route(request()->route()->getName(), array_merge(request()->route()->parameters(), ['locale' => 'en'])) }}" class="px-2.5 py-1.5 rounded-lg text-sm font-medium transition-colors {{ app()->getLocale() === 'en' ? 'bg-accent/10 text-accent' : 'text-muted hover:text-text hover:bg-accent/5' }}" aria-current="{{ app()->getLocale() === 'en' ? 'page' : 'false' }}" aria-label="English">EN</a>
                     </div>
 
-                    <div x-data="themeSwitcher" class="flex items-center gap-1 p-1 bg-surface border border-border rounded-lg" role="group" aria-label="{{ __('site.theme_selection') }}">
+                    <div x-data="themeSwitcher" class="flex items-center gap-1 p-1 bg-surface rounded-xl shadow-sm" role="group" aria-label="{{ __('site.theme_selection') }}">
                         <button type="button" @click="set('light')" :aria-pressed="mode === 'light'" :class="mode === 'light' ? 'bg-accent/10 text-accent' : 'text-muted hover:text-text hover:bg-accent/5'" class="p-2 rounded-md transition-colors" data-theme-option="light" aria-label="{{ __('theme.light') }}">{{ __('theme.light') }}</button>
                         <button type="button" @click="set('dark')" :aria-pressed="mode === 'dark'" :class="mode === 'dark' ? 'bg-accent/10 text-accent' : 'text-muted hover:text-text hover:bg-accent/5'" class="p-2 rounded-md transition-colors" data-theme-option="dark" aria-label="{{ __('theme.dark') }}">{{ __('theme.dark') }}</button>
                         <button type="button" @click="set('system')" :aria-pressed="mode === 'system'" :class="mode === 'system' ? 'bg-accent/10 text-accent' : 'text-muted hover:text-text hover:bg-accent/5'" class="p-2 rounded-md transition-colors" data-theme-option="system" aria-label="{{ __('theme.system') }}">{{ __('theme.system') }}</button>
@@ -107,7 +107,7 @@
         @yield('content')
     </main>
 
-    <footer class="border-t border-border bg-surface/50">
+    <footer class="bg-surface/50 mt-20 sm:mt-28">
         <div class="container py-8 md:py-12">
             <div class="flex flex-col md:flex-row items-center justify-between gap-6">
                 <p class="text-sm text-muted">&copy; 2026 Aldin Nur Adzin</p>
@@ -122,7 +122,7 @@
                     @endif
 
                     @if(file_exists(public_path('cv/Aldin-Nur-Adzin-CV.pdf')))
-                    <a href="{{ asset('cv/Aldin-Nur-Adzin-CV.pdf') }}" class="flex items-center gap-2 px-3 py-1.5 border border-border rounded-lg text-sm font-medium text-text hover:border-accent hover:text-accent transition-colors" aria-label="{{ __('footer.cv') }}">{{ __('Download CV') }}</a>
+                    <a href="{{ asset('cv/Aldin-Nur-Adzin-CV.pdf') }}" class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium text-text hover:text-accent transition-colors" aria-label="{{ __('footer.cv') }}">{{ __('Download CV') }}</a>
                     @endif
                 </div>
                 <div class="w-full md:w-auto" />

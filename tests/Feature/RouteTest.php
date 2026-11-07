@@ -106,6 +106,19 @@ class RouteTest extends TestCase
         $response->assertRedirect('/id');
     }
 
+    public function testNoDecorativeBordersInAllLocales(): void
+    {
+        $paths = ['/id', '/en', '/id/work', '/en/work', '/id/about', '/en/about', '/id/contact', '/en/contact'];
+
+        foreach ($paths as $path) {
+            $response = $this->get($path);
+            $response->assertStatus(200);
+            $response->assertDontSee('border-');
+            $response->assertDontSee('divide-');
+            $response->assertDontSee('outline-');
+        }
+    }
+
     public function testLanguageKeysAreIdenticalBetweenLocales(): void
     {
         $id = require base_path('lang/id/site.php');
