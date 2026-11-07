@@ -39,15 +39,13 @@
                     </div>
                     <div>
                         <dt class="text-muted mb-1">{{ __('project.period') }}</dt>
-                        <dd class="font-medium">{{ $project['period'] }}</dd>
+                        <dd class="font-medium">{{ $project['period'] ?? '' }}</dd>
                     </div>
                     <div>
-                        <dt class="text-muted mb-1">{{ __('project.team') }}</dt>
-                        <dd class="font-medium">{{ $project['team'] }}</dd>
+                        <dd class="font-medium">{{ $project['team'] ?? '' }}</dd>
                     </div>
                     <div>
-                        <dt class="text-muted mb-1">{{ __('project.status') }}</dt>
-                        <dd class="font-medium">{{ $project['status'] }}</dd>
+                        <dd class="font-medium">{{ $project['status'] ?? '' }}</dd>
                     </div>
                     <div class="sm:col-span-2">
                         <dt class="text-muted mb-1">{{ __('project.stack') }}</dt>

@@ -58,11 +58,11 @@
         </div>
 
         {{-- Projects Grid --}}
-        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" x-data="workFilter" x-init="projects = $el.querySelectorAll('[data-project]')">
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-2" x-data="workFilter" x-init="projects = $el.querySelectorAll('[data-project]')">
             @foreach($projects as $project)
                 @include('components.project-card', [
                     'project' => $project,
-                    'showCategoryFilter' => true
+                    'cardClass' => ($project['featured'] ?? false) ? 'lg:col-span-2' : ''
                 ])
             @endforeach
         </div>

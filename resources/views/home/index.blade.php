@@ -62,9 +62,12 @@
             <h2 id="selected-work-heading" class="section-title">{{ $selectedWork['title'] }}</h2>
         </header>
 
-        <div class="grid gap-6 md:grid-cols-3">
+        <div class="grid gap-6 lg:grid-cols-2">
             @foreach($selectedWork['projects'] ?? array_slice($whatIDo['projects'] ?? [], 0, 3) as $project)
-                @include('components.project-card', ['project' => $project])
+                @include('components.project-card', [
+                    'project' => $project,
+                    'cardClass' => ($project['featured'] ?? false) ? 'lg:col-span-2' : ''
+                ])
             @endforeach
         </div>
 
