@@ -239,3 +239,100 @@ body {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
+/* ==== D3: Gerak halus & parallax ==== */
+
+/* View transition antar-halaman */
+@view-transition {
+  navigation: auto;
+}
+@media not (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root) {
+    animation: vt-fade-out 200ms ease-out both;
+  }
+  ::view-transition-new(root) {
+    animation: vt-fade-in 200ms ease-in both;
+  }
+}
+@keyframes vt-fade-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes vt-fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* Reveal saat scroll */
+.reveal {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-init {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 450ms ease, transform 450ms ease;
+}
+.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 450ms ease, transform 450ms ease;
+}
+
+/* Parallax hero layers */
+.parallax-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+.parallax-layer-1 {
+  background: radial-gradient(600px circle at 20% -10%, color-mix(in srgb, var(--color-accent) 15%, transparent), transparent 60%);
+  transform: translate3d(0, clamp(-80px, calc(var(--scroll-y, 0) * -0.15), 80px), 0);
+}
+.parallax-layer-2 {
+  background: radial-gradient(400px circle at 80% 20%, color-mix(in srgb, var(--color-accent) 8%, transparent), transparent 55%);
+  transform: translate3d(0, clamp(-80px, calc(var(--scroll-y, 0) * -0.3), 80px), 0);
+}
+
+/* Hover kartu (hanya perangkat dengan hover) */
+@media (hover: hover) {
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+  .card:hover img {
+    transform: scale(1.03);
+  }
+}
+
+/* Indikator progres scroll (opsional, @supports) */
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    position: fixed;
+    inset: 0 0 auto 0;
+    height: 2px;
+    width: 100%;
+    background: var(--color-accent);
+    transform-origin: 0% 50%;
+    z-index: 50;
+    animation: scroll-progress linear both;
+    animation-timeline: scroll();
+  }
+  @keyframes scroll-progress {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+}
+
+/* Nonaktifkan semua efek gerak pada reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-init,
+  .is-visible {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .parallax-layer {
+    display: none !important;
+  }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+}

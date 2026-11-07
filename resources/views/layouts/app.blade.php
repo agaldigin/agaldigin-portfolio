@@ -65,6 +65,7 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 <body class="min-h-full flex flex-col antialiased">
+    <div class="scroll-progress" aria-hidden="true"></div>
     <a href="#main" class="skip-link">{{ __('site.skip_content') }}</a>
 
     <header class="sticky top-0 z-50 bg-bg/80 backdrop-blur-sm sm:shadow-sm" x-data="{ scrolled: false }" @window.scroll.passive="scrolled = window.scrollY > 0" :class="scrolled ? 'shadow-md' : ''">

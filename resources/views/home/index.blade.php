@@ -31,23 +31,24 @@
 @section('canonical', route('home', ['locale' => app()->getLocale()]))
 
 @section('content')
-{{-- Hero Section --}}
-<section class="section" aria-labelledby="hero-heading">
-    <div class="container">
+<section class="section" aria-labelledby="hero-heading" style="position:relative; overflow:hidden;">
+    <div class="parallax-layer parallax-layer-1" aria-hidden="true"></div>
+    <div class="parallax-layer parallax-layer-2" aria-hidden="true"></div>
+    <div class="container relative reveal z-10">
         <div class="max-w-3xl mx-auto text-center">
-            <h1 id="hero-heading" class="text-4xl md:text-6xl font-bold tracking-tight text-gradient">
+            <h1 id="hero-heading" class="text-4xl md:text-6xl font-bold tracking-tight text-gradient reveal">
                 Aldin Nur Adzin
             </h1>
-            <p class="mt-4 text-lg md:text-xl text-muted">{{ $hero['role'] }}</p>
-            <p class="mt-6 max-w-2xl mx-auto text-text">{{ $hero['description'] }}</p>
+            <p class="mt-4 text-lg md:text-xl text-muted reveal">{{ $hero['role'] }}</p>
+            <p class="mt-6 max-w-2xl mx-auto text-text reveal">{{ $hero['description'] }}</p>
 
-            <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 reveal">
                 <a href="{{ route('work.index', ['locale' => app()->getLocale()]) }}"
-                   class="btn btn-primary w-full sm:w-auto">
+                   class="btn btn-primary w-full sm:w-auto reveal">
                     {{ $hero['cta_work'] }}
                 </a>
                 <a href="{{ route('contact', ['locale' => app()->getLocale()]) }}"
-                   class="btn btn-secondary w-full sm:w-auto">
+                   class="btn btn-secondary w-full sm:w-auto reveal">
                     {{ $hero['cta_contact'] }}
                 </a>
             </div>
