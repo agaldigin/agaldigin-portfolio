@@ -5,20 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title ?? __('site.name') }}</title>
     <meta name="description" content="{{ $description ?? __('site.description') }}">
+
+    {{-- Favicons --}}
+    <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
+    <link rel="icon" href="{{ asset('favicon-192.png') }}" sizes="192x192" type="image/png">
+    <link rel="icon" href="{{ asset('favicon-512.png') }}" sizes="512x512" type="image/png">
+    <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
+
     <link rel="canonical" href="{{ $canonical ?? request()->url() }}">
 
-    @if(isset($ogImage))
-    <meta property="og:image" content="{{ $ogImage }}">
-    @endif
-    @if(isset($ogTitle))
-    <meta property="og:title" content="{{ $ogTitle }}">
-    @endif
-    @if(isset($ogDescription))
-    <meta property="og:description" content="{{ $ogDescription }}">
-    @endif
+    @php
+        $baseUrl = rtrim(config('site.site_url', 'http://localhost:8000'), '/');
+        $ogImageUrl = isset($ogImage) ? $ogImage : asset('images/og.png');
+        if (!str_starts_with($ogImageUrl, 'http')) {
+            $ogImageUrl = $baseUrl . '/' . ltrim($ogImageUrl, '/');
+        }
+        $ogTitle = isset($ogTitle) ? $ogTitle : (($title ?? __('site.name')));
+        $ogDescription = isset($ogDescription) ? $ogDescription : __('site.description');
+    @endphp
+
     <meta property="og:type" content="website">
-    <meta property="og:url" content="{{ request()->url() }}">
+    <meta property="og:url" content="{{ $baseUrl . request()->path() }}">
     <meta property="og:site_name" content="{{ config('site.name') }}">
+    <meta property="og:locale" content="{{ app()->getLocale() === 'id' ? 'id_ID' : 'en_US' }}">
+    <meta property="og:title" content="{{ $ogTitle }}">
+    <meta property="og:description" content="{{ $ogDescription }}">
+    <meta property="og:image" content="{{ $ogImageUrl }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@{{ config('site.github') }}">
+    <meta name="twitter:title" content="{{ $ogTitle }}">
+    <meta name="twitter:description" content="{{ $ogDescription }}">
+    <meta name="twitter:image" content="{{ $ogImageUrl }}">
+
+    @yield('jsonld')
 
     @foreach(config('site.locales', ['id', 'en']) as $locale)
     <link rel="alternate" hreflang="{{ $locale }}" href="{{ route(request()->route()->getName(), array_merge(request()->route()->parameters(), ['locale' => $locale])) }}">

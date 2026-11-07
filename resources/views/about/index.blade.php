@@ -1,5 +1,23 @@
 @extends('layouts.app')
 
+@section('jsonld')
+@verbatim
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Aldin Nur Adzin, S.Tr.Kom.",
+    "jobTitle": "{{ __('about.title') }}",
+    "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Samarinda",
+        "addressCountry": "ID"
+    },
+    "sameAs": ["{{ config('site.github') }}"]
+}
+</script>
+@endverbatim
+@endsection
 @section('title', __('about.title') . ' — ' . config('site.name'))
 
 @section('description', $bio['bio'])

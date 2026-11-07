@@ -1,1 +1,8 @@
 /vendor
+/assets/
+/prompt*.md
+/AI-HANDOFF*.md
+index.md
+AGENTS.md
+CLAUDE.md
+/tests/

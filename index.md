@@ -27,7 +27,7 @@ portfolio-laravel/
 ├── README.md                 # Dokumentasi Laravel default
 ├── AGENTS.md                 # Pedoman agent (Laravel Boost)
 ├── CLAUDE.md                 # Pedoman agent (sama seperti AGENTS.md)
-├── debug-thumbnail.md        # Catatan debug thumbnail proyek
+├── prompt-perbaikan.md       # Pedoman perbaikan & kesiapan Vercel
 ├── vercel.json               # Konfigurasi deployment Vercel
 ├── .vercelignore             # File yang diabaikan Vercel
 ├── composer.json             # Dependensi PHP / skrip Composer
@@ -42,7 +42,6 @@ portfolio-laravel/
 ├── .gitignore
 ├── .editorconfig
 ├── .npmrc
-├── junit.xml                 # Hasil uji terakhir (cache)
 ├── api/
 │   └── index.php             # Entry point serverless Vercel
 ├── app/
@@ -54,17 +53,15 @@ portfolio-laravel/
 │   │   │   ├── AboutController.php
 │   │   │   ├── ContactController.php
 │   │   │   ├── SitemapController.php
-│   │   │   └── SeoController.php
-│   │   ├── Middleware/
-│   │   │   └── SetLocale.php
-│   │   └── Sitemap/          # (kosong)
-│   ├── Models/
-│   │   └── User.php
-│   ├── Providers/
-│   │   ├── AppServiceProvider.php
-│   │   └── ContentRepositoryServiceProvider.php
-│   └── Services/
-│       └── ContentRepository.php
+│   │   │   ├── Middleware/
+│   │   │   │   └── SetLocale.php
+│   │   ├── Models/
+│   │   │   └── User.php
+│   │   ├── Providers/
+│   │   │   ├── AppServiceProvider.php
+│   │   │   └── ContentRepositoryServiceProvider.php
+│   │   └── Services/
+│   │       └── ContentRepository.php
 ├── bootstrap/
 │   ├── app.php               # Konfigurasi bootstrap Laravel
 │   └── cache/
@@ -95,20 +92,30 @@ portfolio-laravel/
 │   │   │   nav.php, project.php, site.php, status.php, theme.php, work.php
 │   └── en/                   # Terjemahan Inggris
 │       ├── about.php, contact.php, errors.php, footer.php,
-│       │   nav.php, project.php, site.php, status.php, theme.php, work.php
+│   │   nav.php, project.php, site.php, status.php, theme.php, work.php
 ├── public/
 │   ├── index.php             # Entry point web
 │   ├── .htaccess
 │   ├── favicon.ico
+│   ├── favicon-192.png
+│   ├── favicon-512.png
+│   ├── apple-touch-icon.png
 │   ├── robots.txt
 │   ├── cv/
 │   │   └── Aldin-Nur-Adzin-CV.pdf
 │   ├── images/
-│   │   ├── aldin.jpg, kms1.png, kms2.png, bappeda1.png, bappeda2.png
+│   │   ├── aldin.jpg
+│   │   └── og.png
 │   ├── projects/
-│   │   ├── ansor-kaltim/thumbnail.png
-│   │   ├── bappeda-kaltim/thumbnail.png
-│   │   └── koetai-soundline/thumbnail.png
+│   │   ├── ansor-kaltim/
+│   │   │   ├── thumbnail.jpg, 01-login-captcha.jpg, 02-dashboard-statistik.jpg,
+│   │   │   03-manajemen-struktur-organisasi.jpg, 04-tabel-manajemen-anggota.jpg,
+│   │   │   05-generator-qr-absensi.jpg, 06-dashboard-absensi-log-real-time.jpg,
+│   │   │   07-konfigurasi-hak-akses-rbac.jpg, 08-import-excel-10-sheet.jpg
+│   │   ├── bappeda-kaltim/
+│   │   │   ├── thumbnail.jpg, 01-beranda.jpg, 02-halaman-publik.jpg
+│   │   └── koetai-mahkota-soundline/
+│   │       ├── thumbnail.jpg, 01-pesanan-tiket.jpg, 02-pesan-tiket.jpg
 │   └── build/
 │       ├── assets/           # Aset dikompilasi Vite (CSS, font, JS)
 │       └── manifest.json
@@ -117,7 +124,6 @@ portfolio-laravel/
 │   ├── js/app.js
 │   ├── views/
 │   │   ├── layouts/app.blade.php
-│   │   ├── welcome.blade.php
 │   │   ├── home/index.blade.php
 │   │   ├── work/index.blade.php
 │   │   ├── work/show.blade.php
@@ -129,12 +135,12 @@ portfolio-laravel/
 │   └── content/
 │       ├── id/               # Konten bahasa Indonesia
 │       │   ├── projects.php, hero.php, whatido.php, journey.php,
-│       │   │   selectedwork.php, bio.php, skills.php, credentials.php,
-│       │   │   timeline.php, contact.php
+│   │   │   selectedwork.php, bio.php, skills.php, credentials.php,
+│   │   │   timeline.php, contact.php
 │       └── en/               # Konten bahasa Inggris
 │           ├── projects.php, hero.php, whatido.php, journey.php,
-│           │   selectedwork.php, bio.php, skills.php, credentials.php,
-│           │   timeline.php, contact.php
+│   │   selectedwork.php, bio.php, skills.php, credentials.php,
+│   │   timeline.php, contact.php
 ├── routes/
 │   ├── web.php               # Rute web
 │   └── console.php           # Perintah Artisan
@@ -145,9 +151,7 @@ portfolio-laravel/
 │   ├── TestCase.php
 │   ├── Unit/ExampleTest.php
 │   └── Feature/
-│       ├── RouteTest.php
-│       └── ExampleTest.php
-├── vendor/                   # Dependensi Composer (gitignore)
+│       └── RouteTest.php
 └── node_modules/             # Dependensi npm (gitignore)
 ```
 
@@ -180,7 +184,8 @@ Middleware `locale` memvalidasi segmen pertama URL harus `id` atau `en`, selain 
 | `AboutController.php` | Bio, timeline, credentials, skills |
 | `ContactController.php` | Halaman kontak |
 | `SitemapController.php` | Generate XML sitemap untuk semua locale + proyek |
-| `SeoController.php` | Sitemap + robots SEO (tidak terdaftar dalam `web.php`, tersisa) |
+
+`SeoController.php` dan `welcome.blade.php` telah dihapus (tidak terpakai).
 
 ---
 
@@ -196,7 +201,7 @@ Middleware `locale` memvalidasi segmen pertama URL harus `id` atau `en`, selain 
 
 | Berkas | Tanggung Jawab |
 |--------|----------------|
-| `ContentRepository.php` | Membaca berkas PHP konten dari `resources/content/{locale}/`, menyediakan getter (`get`, `getProject`, `getAllProjects`, `getTimeline`, `getCredentials`, `getSkills`, `getBio`, `getHero`, `getJourney`, `getWhatIDo`) |
+| `ContentRepository.php` | Membaca berkas PHP konten dari `resources/content/{locale}/`, menyediakan getter (`get`, `getProject`, `getAllProjects`, `getTimeline`, `getCredentials`, `getSkills`, `getBio`, `getHero`, `getJourney`, `getWhatIDo`) + `sanitize()` (menghapus `TODO(owner)` dan string kosong sebelum render) |
 | `ContentRepositoryServiceProvider.php` | Register `ContentRepository` sebagai singleton di container |
 | `AppServiceProvider.php` | Kosong (boilerplate) |
 
@@ -228,9 +233,9 @@ Setiap locale memiliki berkas yang sama. Konten dikembalikan sebagai array PHP m
 | `contact.php` | Judul dan deskripsi halaman kontak |
 
 Contoh slug proyek yang tersedia:
-- `ansor-kaltim` — Aplikasi Ansor Kaltim (Laravel, Livewire, MySQL)
-- `bappeda-kaltim` — Website BAPPEDA Kaltim (HTML/CSS/JS, Bootstrap)
-- `koetai-mahkota-soundline` — Promosi properti Koetai Mahkota Soundline
+- `ansor-kaltim` — Aplikasi Ansor Kaltim (Laravel, Livewire, PHP, MySQL, Tailwind CSS)
+- `bappeda-kaltim` — Website BAPPEDA Kaltim (Frontend, Responsive, Navigasi)
+- `koetai-mahkota-soundline` — Website pemesanan tiket Koetai Mahkota Soundline (Frontend)
 
 ---
 
@@ -257,20 +262,34 @@ Digunakan oleh helper `__()` di Blade.
 
 | Berkas | Keterangan |
 |--------|------------|
-| `layouts/app.blade.php` | Layout utama: header (nav, jam, bahasa, tema), main, footer |
-| `home/index.blade.php` | Beranda: hero, selected work, whatIDo, journey, CTA |
+| `layouts/app.blade.php` | Layout utama: head SEO (favicon, OG, Twitter Card, hreflang, canonical, JSON-LD yield), header, main, footer |
+| `home/index.blade.php` | Beranda: hero, selected work, whatIDo, journey, CTA, JSON-LD Person |
 | `work/index.blade.php` | Daftar proyek dengan filter kategori & teknologi |
-| `work/show.blade.php` | Detail proyek: summary, stack, repo/live, problem, solution, decisions, features, screenshots, outcome, next project |
-| `about/index.blade.php` | Foto & bio, timeline, skills, credentials, unduh CV |
-| `contact/index.blade.php` | Kontak kartu: email, whatsapp, github, linkedin |
-| `sitemap/index.blade.php` | Template XML sitemap |
+| `work/show.blade.php` | Detail proyek: summary, stack, repo/live, problem, solution, decisions, features, screenshots (placeholder jika tidak ada), outcome, next project |
+| `about/index.blade.php` | Foto & bio, timeline, skills, credentials, unduh CV, JSON-LD Person |
+| `contact/index.blade.php` | Kontak kartu: email, whatsapp, github, linkedin (kondisional) |
+| `sitemap/index.blade.php` | Template XML sitemap dengan xhtml:link alternatif |
 | `errors/404.blade.php` | Halaman 404 |
-| `components/project-card.blade.php` | Komponen kartu proyek (digunakan home & work) |
-| `welcome.blade.php` | Halaman welcome default Laravel (tidak digunakan aktif) |
+| `components/project-card.blade.php` | Komponen kartu proyek (thumbnail fallback .jpg/.png, placeholder, tag difilter, linkable) |
+
+`welcome.blade.php` telah dihapus.
 
 ---
 
-## 11. Database
+## 11. SEO & Aksesibilitas (Fase 3)
+
+- `<html lang="{{ app()->getLocale() }}">`
+- Favicon: `favicon.ico`, `favicon-192.png`, `favicon-512.png`, `apple-touch-icon.png`
+- Open Graph: `og:type`, `og:url` (absolut), `og:site_name`, `og:locale`, `og:title`, `og:description`, `og:image` (1200×630)
+- Twitter Card: `summary_large_image`, `twitter:site`, `twitter:title`, `twitter:description`, `twitter:image`
+- JSON-LD `Person` di beranda dan About (nama, pekerjaan, kota, `sameAs` GitHub)
+- `hreflang` untuk `id`, `en`, dan `x-default` di semua halaman
+- XML sitemap dengan alternatif `xhtml:link` per URL
+- `robots.txt` menyertakan URL sitemap absolut
+
+---
+
+## 12. Database
 
 ### Migrasi (`database/migrations/`)
 
@@ -288,29 +307,15 @@ Factory untuk model `User` dengan password default `password`.
 
 ---
 
-## 12. Konfigurasi
+## 13. Konfigurasi
 
 | Berkas | Keterangan |
 |--------|------------|
 | `config/site.php` | Nama, email, GitHub, WhatsApp, LinkedIn, site_url, cv_path, lokasi, timezone, locales |
 | `bootstrap/app.php` | Routing, middleware (`locale` alias + web group), provider `ContentRepositoryServiceProvider`, exceptions |
 | `routes/console.php` | Perintah Artisan `inspire` |
-| `vite.config.js` | Input `resources/css/app.css` + `resources/js/app.js`, Tailwind plugin |
-| `vercel.json` | Build serverless PHP (`api/index.js`), static `public/**`, routes ke `api/index.php` |
-
----
-
-## 13. Aset Publik (`public/`)
-
-| Path | Keterangan |
-|------|------------|
-| `index.php` | Entry point Laravel |
-| `.htaccess`, `robots.txt`, `favicon.ico` | Standar web server |
-| `cv/Aldin-Nur-Adzin-CV.pdf` | CV unduhan |
-| `images/aldin.jpg` | Foto profil |
-| `images/kms1.png`, `kms2.png`, `bappeda1.png`, `bappeda2.png` | Gambar pendukung |
-| `projects/*/thumbnail.png` | Thumbnail proyek (ansor-kaltim, bappeda-kaltim, koetai-soundline) |
-| `build/` | Output Vite (CSS dikompilasi, font, manifest) |
+| `vite.config.js` | Input `resources/css/app.css` + `resources/js/app.js`, Tailwind plugin, `@custom-variant dark` |
+| `vercel.json` | Build serverless PHP (`api/index.php`), static `public/**`, routes ke `api/index.php` |
 
 ---
 
@@ -320,8 +325,7 @@ Factory untuk model `User` dengan password default `password`.
 |--------|---------|
 | `tests/TestCase.php` | Base test case |
 | `tests/Unit/ExampleTest.php` | Contoh uji unit |
-| `tests/Feature/RouteTest.php` | Uji semua rute dalam kedua locale, proyek, 404, redirect locale tidak valid |
-| `tests/Feature/ExampleTest.php` | Contoh uji feature |
+| `tests/Feature/RouteTest.php` | Semua rute kedua locale, halaman beranda menampilkan 3 proyek, kunci bahasa identik, tidak ada `TODO(owner)`, semua thumbnail/screenshot ada, root redirect |
 
 Config uji (`phpunit.xml`) menggunakan SQLite in-memory, cache array, queue sync.
 
@@ -332,37 +336,22 @@ Config uji (`phpunit.xml`) menggunakan SQLite in-memory, cache array, queue sync
 | Berkas | Keterangan |
 |--------|------------|
 | `.env` / `.env.example` | Variabel lingkungan aplikasi |
-| `.gitignore` | Log, env, vendor, node_modules, build, IDE, dll. |
+| `.gitignore` | Log, env, vendor, node_modules, IDE, `/assets/`, `/prompt*.md`, `/AI-HANDOFF*.md`, `junit.xml` (build `public/build` di-commit) |
 | `.editorconfig` | UTF-8, LF, spasi 4, newline akhir |
 | `.npmrc` | `ignore-scripts=true`, `audit=true` |
+| `.vercelignore` | `/vendor`, `/assets/`, `/prompt*.md`, `/AI-HANDOFF*.md`, `index.md`, `AGENTS.md`, `CLAUDE.md`, `/tests/` |
 | `package.json` | Build/dev via Vite, Tailwind 4, Alpine.js, fontsource |
 | `composer.json` | Laravel 13, PHPUnit 12, Pint, Tinker, dll. |
-| `junit.xml` | Cache hasil uji PHPUnit terakhir |
 
 ---
 
-## 16. Arsitektur Konten (Alur Data)
+## 16. Catatan Penting
 
-```
-routes/web.php
-  → Middleware SetLocale (set locale + ContentRepository)
-  → Controller (Home/Work/About/Contact/Sitemap)
-    → ContentRepository::get('file') / getProject($slug)
-      → require resource_path("content/{locale}/{file}.php")
-    → view('*.blade.php', $data)
-      → layouts/app.blade.php (@yield('content'))
-        → __() dari lang/{locale}/*.php
-```
+- `public/build` ikut ter-commit agar CSS/JS tersedia di Vercel.
+- Semua konten situs disimpan sebagai berkas PHP dalam `resources/content/` (bukan database).
+- Proyek `koetai-mahkota-soundline` adalah website pemesanan tiket (bukan promosi properti), stack tidak ditulis (tidak diketahui).
+- Tidak ada `TODO(owner)` yang boleh tampil di UI (difilter oleh `ContentRepository::sanitize()`).
 
 ---
 
-## 17. Catatan Penting
-
-- `SeoController` ada tetapi **tidak terdaftar** dalam `routes/web.php`; rute sitemap/robots dihandle oleh `SitemapController` dan closure di `web.php`.
-- `welcome.blade.php` adalah halaman default Laravel dan **tidak digunakan** oleh rute aplikasi.
-- Semua konten situs disimpan sebagai berkas PHP dalam `resources/content/` (bukan database), kecuali tabel auth/standar Laravel.
-- Proyek `koetai-mahkota-soundline` memiliki `stack` / `technologies` bernilai `['TODO(owner)']` — menunggu data dari pemilik.
-
----
-
-*Dibuat untuk mengindex keseluruhan proyek portfolio-laravel.* 
+*Dibuat untuk mengindex keseluruhan proyek portfolio-laravel.*
