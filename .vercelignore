@@ -1,4 +1,7 @@
 /vendor
+/node_modules
+/.env
+/storage/logs
 /assets/
 /prompt*.md
 /AI-HANDOFF*.md

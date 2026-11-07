@@ -19,6 +19,22 @@
             "dest": "/public/build/assets/$1"
         },
         {
+            "src": "/images/(.*)",
+            "dest": "/public/images/$1"
+        },
+        {
+            "src": "/projects/(.*)",
+            "dest": "/public/projects/$1"
+        },
+        {
+            "src": "/cv/(.*)",
+            "dest": "/public/cv/$1"
+        },
+        {
+            "src": "/favicon.ico",
+            "dest": "/public/favicon.ico"
+        },
+        {
             "src": "/favicon.(.*)",
             "dest": "/public/favicon.$1"
         },

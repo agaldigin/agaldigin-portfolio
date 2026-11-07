@@ -1,58 +1,168 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Portfolio Laravel — Aldin Nur Adzin, S.Tr.Kom.
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Situs portofolio bilingual (ID/EN) milik Aldin Nur Adzin, Frontend & Backend Developer (Laravel focus) dari Samarinda, Kalimantan Timur. Dibangun dengan Laravel 13, PHP 8.3, Tailwind CSS 4, Vite, dan Alpine.js. Di-deploy ke Vercel.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+# Portfolio Laravel — Aldin Nur Adzin, S.Tr.Kom.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Aldin Nur Adzin's bilingual (ID/EN) portfolio site, Frontend & Backend Developer (Laravel focus) from Samarinda, East Kalimantan. Built with Laravel 13, PHP 8.3, Tailwind CSS 4, Vite, and Alpine.js. Deployed on Vercel.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 🇮🇩 Bahasa Indonesia
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Menjalankan Secara Lokal (Laragon)
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+1. Pastikan PHP 8.3+ dan Composer terpasang:
+   ```sh
+   php -v
+   composer -V
+   ```
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+2. Instal dependensi:
+   ```sh
+   composer install
+   npm install --ignore-scripts
+   ```
 
-## Agentic Development
+3. Siapkan environment:
+   ```sh
+   cp .env.example .env
+   php artisan key:generate
+   ```
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+4. Jalankan build aset:
+   ```sh
+   npm run build
+   ```
 
-```bash
-composer require laravel/boost --dev
+5. Buka situs di Laragon: `http://portfolio-laravel.test/id` dan `/en`.
 
-php artisan boost:install
-```
+### Mengedit Konten
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Konten situs disimpan sebagai berkas PHP di `resources/content/{id,en}/` dan terjemahan di `lang/{id,en}/`. Edit berkas tersebut langsung, tidak perlu sentuh database.
 
-## Contributing
+### Deploy ke Vercel (untuk pemula)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+1. Buat repo GitHub baru dan push kode ini:
+   ```sh
+   git init
+   git add .
+   git commit -m "Initial commit"
+   git remote add origin https://github.com/USERNAME/REPO.git
+   git push -u origin main
+   ```
 
-## Code of Conduct
+2. Masuk ke [Vercel](https://vercel.com), pilih **Add New → Project**, impor repo GitHub Anda.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+3. Vercel akan mendeteksi proyek PHP/Laravel. Konfigurasikan:
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `public`
+   - **Install Command**: `composer install && npm install --ignore-scripts`
 
-## Security Vulnerabilities
+4. Set variabel lingkungan di Vercel (Project Settings → Environment Variables):
+   | Variabel | Nilai Contoh |
+   |----------|--------------|
+   | `APP_KEY` | Hasil `php artisan key:generate --show` |
+   | `APP_ENV` | `production` |
+   | `APP_DEBUG` | `false` |
+   | `APP_URL` | `https://nama-app.vercel.app` |
+   | `LOG_CHANNEL` | `stderr` |
+   | `SESSION_DRIVER` | `cookie` |
+   | `CACHE_STORE` | `array` |
+   | `QUEUE_CONNECTION` | `sync` |
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+5. Klik **Deploy**. Buka URL `*.vercel.app/id` dan `/en` untuk memverifikasi. Tambahkan domain custom nantinya dari dashboard Vercel.
 
+---
+
+## 🇬🇧 English
+
+### Running Locally (Laragon)
+
+1. Make sure PHP 8.3+ and Composer are installed:
+   ```sh
+   php -v
+   composer -V
+   ```
+
+2. Install dependencies:
+   ```sh
+   composer install
+   npm install --ignore-scripts
+   ```
+
+3. Set up environment:
+   ```sh
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+4. Build assets:
+   ```sh
+   npm run build
+   ```
+
+5. Open the site via Laragon: `http://portfolio-laravel.test/id` and `/en`.
+
+### Editing Content
+
+Site content is stored as PHP files in `resources/content/{id,en}/` and translations in `lang/{id,en}/`. Edit those files directly, no database needed.
+
+### Deploy to Vercel (Beginner Guide)
+
+1. Create a new GitHub repo and push this code:
+   ```sh
+   git init
+   git add .
+   git commit -m "Initial commit"
+   git remote add origin https://github.com/USERNAME/REPO.git
+   git push -u origin main
+   ```
+
+2. Go to [Vercel](https://vercel.com), select **Add New → Project**, import your GitHub repo.
+
+3. Vercel will detect the PHP/Laravel project. Configure:
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `public`
+   - **Install Command**: `composer install && npm install --ignore-scripts`
+
+4. Set environment variables in Vercel (Project Settings → Environment Variables):
+   | Variable | Example Value |
+   |----------|---------------|
+   | `APP_KEY` | Output of `php artisan key:generate --show` |
+   | `APP_ENV` | `production` |
+   | `APP_DEBUG` | `false` |
+   | `APP_URL` | `https://your-app.vercel.app` |
+   | `LOG_CHANNEL` | `stderr` |
+   | `SESSION_DRIVER` | `cookie` |
+   | `CACHE_STORE` | `array` |
+   | `QUEUE_CONNECTION` | `sync` |
+
+5. Click **Deploy**. Open `*.vercel.app/id` and `/en` to verify. Add a custom domain later from the Vercel dashboard.
+
+---
+
+## Struktur Proyek Singkat / Quick Project Structure
+
+| Lokasi | Isi |
+|--------|-----|
+| `resources/content/{id,en}/` | Konten situs (proyek, bio, hero, dll.) |
+| `lang/{id,en}/` | Terjemahan UI (`__()`) |
+| `resources/views/` | Tampilan Blade |
+| `app/Http/Controllers/` | Kontroler Laravel |
+| `routes/web.php` | Rute web |
+| `public/build/` | Aset Vast dikompilasi (dikomit ke git) |
+| `vercel.json` | Konfigurasi Vercel |
+
+---
+
+## Lisensi
+
+MIT License.
+
+---
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+MIT License.
