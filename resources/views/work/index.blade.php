@@ -1,12 +1,13 @@
 @extends('layouts.app')
 
-@section('title', __('work.title') . ' — ' . config('site.name'))
+@section('title', __('work.title') . ' | ' . config('site.name'))
 
-@section('description', 'Portfolio of web projects')
+@section('description', __('work.subtitle'))
 
-@section('ogTitle', __('work.title') . ' — ' . config('site.name'))
+@section('ogTitle', __('work.title') . ' | ' . config('site.name'))
 
-@section('ogDescription', 'Portfolio of web projects')
+@section('ogDescription', __('work.subtitle'))
+
 
 @section('ogImage', asset('images/og.png'))
 

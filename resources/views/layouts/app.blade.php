@@ -25,7 +25,7 @@
     @endphp
 
     <meta property="og:type" content="website">
-    <meta property="og:url" content="{{ $baseUrl . request()->path() }}">
+    <meta property="og:url" content="{{ $baseUrl . '/' . ltrim(request()->path(), '/') }}">
     <meta property="og:site_name" content="{{ config('site.name') }}">
     <meta property="og:locale" content="{{ app()->getLocale() === 'id' ? 'id_ID' : 'en_US' }}">
     <meta property="og:title" content="{{ $ogTitle }}">
@@ -35,7 +35,6 @@
     <meta property="og:image:height" content="630">
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@{{ config('site.github') }}">
     <meta name="twitter:title" content="{{ $ogTitle }}">
     <meta name="twitter:description" content="{{ $ogDescription }}">
     <meta name="twitter:image" content="{{ $ogImageUrl }}">

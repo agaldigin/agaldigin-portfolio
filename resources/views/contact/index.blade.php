@@ -1,13 +1,12 @@
 @extends('layouts.app')
 
-@section('title', __('contact.title') . ' — ' . config('site.name'))
+@section('title', __('contact.title') . ' | ' . config('site.name'))
 
 @section('description', $contact['description'])
 
-@section('ogTitle', __('contact.title') . ' — ' . config('site.name'))
+@section('ogTitle', __('contact.title') . ' | ' . config('site.name'))
 
 @section('ogDescription', $contact['description'])
-
 @section('ogImage', asset('images/og.png'))
 
 @section('canonical', route('contact', ['locale' => app()->getLocale()]))

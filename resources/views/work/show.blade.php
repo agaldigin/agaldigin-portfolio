@@ -1,12 +1,16 @@
 @extends('layouts.app')
 
-@section('title', $project['title'] . ' — ' . __('work.title') . ' — ' . config('site.name'))
+@section('title', $project['title'] . ' | ' . config('site.name'))
 
-@section('description', $project['summary'])
+@php
+use Illuminate\Support\Str;
+$metaDescription = Str::limit($project['summary'] ?? '', 160);
+@endphp
+@section('description', $metaDescription)
 
-@section('ogTitle', $project['title'] . ' — ' . __('work.title') . ' — ' . config('site.name'))
+@section('ogTitle', $project['title'] . ' | ' . config('site.name'))
 
-@section('ogDescription', $project['summary'])
+@section('ogDescription', $metaDescription)
 
 @section('ogImage', $project['thumbnail'] ? asset('projects/' . $project['slug'] . '/' . $project['thumbnail']) : asset('images/og.png'))
 
@@ -131,48 +135,42 @@
         </article>
         @endif
 
-        {{-- Screenshots Gallery --}}
-        @if(!empty($project['screenshots']))
-        <article class="mb-12" aria-labelledby="screenshots-heading">
-            <h2 id="screenshots-heading" class="text-2xl font-semibold mb-4">{{ __('project.screenshots') }}</h2>
-            @if($project['dummy_data_caption'])
-                <p class="text-sm text-muted mb-4">{{ $project['dummy_data_caption'] }}</p>
-            @endif
-            <div class="grid gap-4 md:grid-cols-2">
-                @foreach($project['screenshots'] as $screenshot)
-                    <?php
-                    $screenshotPath = public_path("projects/{$project['slug']}/{$screenshot}");
-                    $hasScreenshot = !empty($screenshot) && file_exists($screenshotPath);
-                    ?>
-                    <figure class="card overflow-hidden">
-                        @if($hasScreenshot)
-                            <img src="{{ asset('projects/' . $project['slug'] . '/' . $screenshot) }}"
-                                 alt="{{ $project['title'] }} - {{ $screenshot }}"
-                                 class="w-full h-auto"
-                                 loading="lazy">
-                        @else
-                            <div class="w-full h-full flex items-center justify-center bg-muted/20">
-                                <div class="text-center p-4">
-                                    <svg class="w-12 h-12 mx-auto text-muted mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                                    <p class="text-sm text-muted">{{ __('project.no_thumbnail') }}</p>
-                                </div>
-                            </div>
-                        @endif
-                    </figure>
-                @endforeach
-            </div>
-        </article>
-        @elseif(!empty($project['dummy_data_caption']))
-        <article class="mb-12" aria-labelledby="screenshots-heading">
-            <h2 id="screenshots-heading" class="text-2xl font-semibold mb-4">{{ __('project.screenshots') }}</h2>
-            <p class="text-sm text-muted mb-4">{{ $project['dummy_data_caption'] }}</p>
-            <div class="grid gap-4 md:grid-cols-2">
-                <div class="card aspect-video flex items-center justify-center bg-muted/20">
-                    <p class="text-muted">No screenshots available</p>
-                </div>
-            </div>
-        </article>
-        @endif
+@if(!empty($project['screenshots']))
+<article class="mb-12" aria-labelledby="screenshots-heading">
+    <h2 id="screenshots-heading" class="text-2xl font-semibold mb-4">{{ __('project.screenshots') }}</h2>
+    @if($project['dummy_data_caption'])
+        <p class="text-sm text-muted mb-4">{{ $project['dummy_data_caption'] }}</p>
+    @endif
+    <div class="grid gap-4 md:grid-cols-2">
+        @foreach($project['screenshots'] as $screenshot)
+            <?php
+            $screenshotFile = is_array($screenshot) ? ($screenshot['file'] ?? null) : $screenshot;
+            $screenshotCaption = is_array($screenshot) ? ($screenshot['caption'] ?? null) : null;
+            $screenshotPath = $screenshotFile ? public_path("projects/{$project['slug']}/{$screenshotFile}") : '';
+            $hasScreenshot = $screenshotFile && file_exists($screenshotPath);
+            ?>
+            <figure class="card overflow-hidden">
+                @if($hasScreenshot)
+                    <img src="{{ asset('projects/' . $project['slug'] . '/' . $screenshotFile) }}"
+                         alt="{{ $screenshotCaption ?? $project['title'] }}"
+                         class="w-full h-auto"
+                         loading="lazy">
+                    @if($screenshotCaption)
+                        <p class="text-sm text-muted mt-1">{{ $screenshotCaption }}</p>
+                    @endif
+                @else
+                    <div class="w-full h-full flex items-center justify-center bg-muted/20">
+                        <div class="text-center p-4">
+                            <svg class="w-12 h-12 mx-auto text-muted mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2-2v12a2 2 0 002 2z" /></svg>
+                            <p class="text-sm text-muted">{{ __('project.no_thumbnail') }}</p>
+                        </div>
+                    </div>
+                @endif
+            </figure>
+        @endforeach
+    </div>
+</article>
+@endif
 
         {{-- Outcome --}}
         <article class="mb-12" aria-labelledby="outcome-heading">

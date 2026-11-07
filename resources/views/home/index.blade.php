@@ -1,28 +1,31 @@
 @extends('layouts.app')
 
+@php
+$jsonLd = [
+    '@context' => 'https://schema.org',
+    '@type' => 'Person',
+    'name' => 'Aldin Nur Adzin, S.Tr.Kom.',
+    'jobTitle' => $hero['role'],
+    'address' => [
+        '@type' => 'PostalAddress',
+        'addressLocality' => 'Samarinda',
+        'addressCountry' => 'ID',
+    ],
+    'sameAs' => [config('site.github')],
+];
+@endphp
+
 @section('jsonld')
-@verbatim
 <script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Aldin Nur Adzin, S.Tr.Kom.",
-    "jobTitle": "{{ $hero['role'] }}",
-    "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Samarinda",
-        "addressCountry": "ID"
-    },
-    "sameAs": ["{{ config('site.github') }}"]
-}
+{{ json_encode($jsonLd, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) }}
 </script>
-@endverbatim
 @endsection
-@section('title', __('hero.role') . ' — ' . config('site.name'))
+
+@section('title', 'Aldin Nur Adzin | ' . __('hero.role'))
 
 @section('description', $hero['description'])
 
-@section('ogTitle', __('hero.role') . ' — ' . config('site.name'))
+@section('ogTitle', 'Aldin Nur Adzin | ' . __('hero.role'))
 
 @section('ogDescription', $hero['description'])
 

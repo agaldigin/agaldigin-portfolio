@@ -1,28 +1,29 @@
-@extends('layouts.app')
+@php
+$jsonLd = [
+    '@context' => 'https://schema.org',
+    '@type' => 'Person',
+    'name' => 'Aldin Nur Adzin, S.Tr.Kom.',
+    'jobTitle' => __('about.title'),
+    'address' => [
+        '@type' => 'PostalAddress',
+        'addressLocality' => 'Samarinda',
+        'addressCountry' => 'ID',
+    ],
+    'sameAs' => [config('site.github')],
+];
+@endphp
 
 @section('jsonld')
-@verbatim
 <script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Aldin Nur Adzin, S.Tr.Kom.",
-    "jobTitle": "{{ __('about.title') }}",
-    "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Samarinda",
-        "addressCountry": "ID"
-    },
-    "sameAs": ["{{ config('site.github') }}"]
-}
+{{ json_encode($jsonLd, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) }}
 </script>
-@endverbatim
 @endsection
-@section('title', __('about.title') . ' — ' . config('site.name'))
+
+@section('title', __('about.title') . ' | ' . config('site.name'))
 
 @section('description', $bio['bio'])
 
-@section('ogTitle', __('about.title') . ' — ' . config('site.name'))
+@section('ogTitle', __('about.title') . ' | ' . config('site.name'))
 
 @section('ogDescription', $bio['bio'])
 

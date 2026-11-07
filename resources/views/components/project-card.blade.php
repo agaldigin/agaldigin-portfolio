@@ -17,7 +17,7 @@ foreach ($thumbnailCandidates as $candidate) {
     }
 }
 $hasThumbnail = !empty($thumbnailPath);
-$isFeatured = !empty($project['featured']);
+$isFeatured = $project['featured'] ?? false;
 $roleShort = $project['role_short'] ?? $project['role'] ?? __('project.no_role');
 $repoPrivate = !empty($project['repo_private']);
 ?>
@@ -49,7 +49,9 @@ $repoPrivate = !empty($project['repo_private']);
         <a href="{{ route('work.show', ['locale' => app()->getLocale(), 'slug' => $project['slug'] ?? '']) }}"
            class="block h-full flex flex-col">
             <div class="flex items-start gap-2 mb-2">
+                @if($isFeatured)
                 <span class="badge badge-accent text-xs">{{ __('project.featured') }}</span>
+                @endif
             </div>
             <h3 class="text-xl font-semibold mb-1.5 line-clamp-3">{{ $project['title'] }}</h3>
             <p class="text-sm text-muted mb-4 flex-1 line-clamp-3">{{ $project['summary'] }}</p>
@@ -62,8 +64,10 @@ $repoPrivate = !empty($project['repo_private']);
 
             <div class="flex items-center gap-3 text-sm text-muted mt-auto">
                 <time class="text-muted">{{ $roleShort }}</time>
-                <span class="text-muted mx-1">·</span>
-                <time class="text-text">{{ $project['year'] ?? '' }}</time>
+                @if($project['period'] ?? $project['year'] ?? '')
+                    <span class="text-muted mx-1">·</span>
+                    <time class="text-text">{{ $project['period'] ?? $project['year'] }}</time>
+                @endif
                 @if($repoPrivate)
                     <span class="badge badge-private">{{ __('project.private_repo') }}</span>
                 @endif

@@ -165,16 +165,47 @@ class RouteTest extends TestCase
                 }
 
                 foreach (($project['screenshots'] ?? []) as $screenshot) {
-                    if (empty($screenshot)) {
+                    $screenshotFile = is_array($screenshot) ? ($screenshot['file'] ?? null) : $screenshot;
+                    if (empty($screenshotFile)) {
                         continue;
                     }
-                    $path = public_path("projects/{$slug}/{$screenshot}");
+                    $path = public_path("projects/{$slug}/{$screenshotFile}");
                     $this->assertFileExists(
                         $path,
-                        "Screenshot tidak ada: projects/{$slug}/{$screenshot}"
+                        "Screenshot tidak ada: projects/{$slug}/{$screenshotFile}"
                     );
                 }
             }
+        }
+    }
+
+    public function testNoRawTemplateSyntaxInAllPages(): void
+    {
+        $paths = array_merge(
+            ['/id', '/en'],
+            array_map(fn ($s) => "/id/work/$s", $this->projectSlugs),
+            array_map(fn ($s) => "/en/work/$s", $this->projectSlugs),
+            ['/id/about', '/en/about', '/id/contact', '/en/contact', '/id/work', '/en/work']
+        );
+
+        foreach ($paths as $path) {
+            $response = $this->get($path);
+            $response->assertStatus(200);
+            $response->assertDontSee('{{');
+            $response->assertDontSee('}}');
+            $response->assertDontSee('config(');
+        }
+    }
+
+    public function testHomeShowsExactlyOneFeaturedBadge(): void
+    {
+        foreach ($this->locales as $locale) {
+            $response = $this->get("/{$locale}");
+            $response->assertStatus(200);
+
+            $featuredText = $locale === 'id' ? 'Unggulan' : 'Featured';
+            $count = substr_count($response->getContent(), $featuredText);
+            $this->assertSame(1, $count, "Expected exactly one '{$featuredText}' badge on {$locale} home page");
         }
     }
 
